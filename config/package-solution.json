@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "manager-365-client-side-solution",
+    "id": "2ff1c6db-b7d5-4d67-b253-5fd3c4fec303",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true
+  },
+  "paths": {
+    "zippedPackage": "solution/manager-365.sppkg"
+  }
+}
