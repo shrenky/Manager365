@@ -21,6 +21,7 @@ export default class Manager365WebPart extends BaseClientSideWebPart<IManager365
     const element: React.ReactElement<IManager365Props > = React.createElement(
       Manager365,
       {
+        spHttpClient: this.context.spHttpClient,
         description: this.properties.description
       }
     );
@@ -36,7 +37,7 @@ export default class Manager365WebPart extends BaseClientSideWebPart<IManager365
     return Version.parse('1.0');
   }
 
-  protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+  protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {    
     return {
       pages: [
         {
