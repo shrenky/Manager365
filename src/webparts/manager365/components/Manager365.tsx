@@ -10,7 +10,7 @@ export default class Manager365 extends React.Component<IManager365Props, IManag
   constructor(props)
   {
     super(props);
-    this.state={loading:true, siteUrls:null}
+    this.state={loading:true, siteUrls:[]}
   }
 
   public componentDidMount(): void {
@@ -27,8 +27,8 @@ export default class Manager365 extends React.Component<IManager365Props, IManag
         <div className={ styles.container }>
           <div className={ styles.row }>
             <div className={ styles.column }>
-              <span className={ styles.title }>Welcome to SharePoint!</span>
-              <p className={ styles.subTitle }>Customize SharePoint experiences using Web Parts.</p>
+              <span className={ styles.title }>Welcome to SharePoint Online Manager365 Webpart!</span>
+              <p className={ styles.subTitle }>View/Manage your SharePoint Online using Manager365.</p>
               <p className={ styles.description }>{escape(this.props.description)}</p>
                 {
                   loading
