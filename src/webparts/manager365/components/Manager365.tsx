@@ -1,10 +1,16 @@
 import * as React from 'react';
-import styles from './Manager365.module.scss';
+import Styles from './Manager365.module.scss';
 import { IManager365Props } from './IManager365Props';
 import { IManager365States } from './IManager365States';
 import { escape } from '@microsoft/sp-lodash-subset';
 import { SearchService } from '../data/SearchService';
-import { Spinner, Label } from 'office-ui-fabric-react';
+import { 
+  Spinner,
+  Nav,
+  INavProps
+} from 'office-ui-fabric-react';
+
+import SiteNode from './nodes/SiteNode';
 
 export default class Manager365 extends React.Component<IManager365Props, IManager365States> {
   constructor(props)
@@ -23,21 +29,25 @@ export default class Manager365 extends React.Component<IManager365Props, IManag
     const loading = this.state.loading ? <Spinner label='loading...' /> : <div />;
 
     return (
-      <div className={ styles.manager365 }>
-        <div className={ styles.container }>
-          <div className={ styles.row }>
-            <div className={ styles.column }>
-              <span className={ styles.title }>Welcome to SharePoint Online Manager365 Webpart!</span>
-              <p className={ styles.subTitle }>View/Manage your SharePoint Online using Manager365.</p>
-              <p className={ styles.description }>{escape(this.props.description)}</p>
+      <div className={ Styles.manager365 }>
+        <div className={ Styles.container }>
+          <div className={ Styles.row }>
+            <div className={ Styles.column }>
+              <span className={ Styles.title }>Welcome to Manager365 Webpart!</span>
+              <p className={ Styles.subTitle }>View/Manage your SharePoint Online by Manager365.</p>
+              <p className={ Styles.description }>{escape(this.props.description)}</p>
                 {
                   loading
                 }
-                <ul>
+                <div className="ms-NavExample-LeftPane">
                   {
-                    this.state.loading ? <li/> : this.state.siteUrls.map(url=>{ return <li>{url}</li>})
+                    this.state.siteUrls.map(
+                      url=>{ 
+                        return <SiteNode siteUrl={url} fold={false} />;
+                      }
+                    )
                   }
-                </ul>
+                </div>
                 
             </div>
           </div>
