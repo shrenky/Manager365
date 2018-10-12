@@ -24,7 +24,11 @@ export default class Manager365 extends React.Component<IManager365Props, IManag
   }
 
   public render(): React.ReactElement<IManager365Props> {
-    
+    let siteLinks: any = this.state.siteUrls.map(
+      function(url, index){ 
+        return {name: url, url: url, key: index} ;
+      }
+    )
 
     const loading = this.state.loading ? <Spinner label='loading...' /> : <div />;
 
@@ -41,11 +45,22 @@ export default class Manager365 extends React.Component<IManager365Props, IManag
                 }
                 <div className="ms-NavExample-LeftPane">
                   {
-                    this.state.siteUrls.map(
-                      url=>{ 
-                        return <SiteNode siteUrl={url} fold={false} />;
+                    <Nav
+                      groups={
+                        [
+                          {
+                            links: [
+                              {
+                                name: "Tenant",
+                                url: "",
+                                links: siteLinks,
+                                isExpanded: false
+                              }
+                            ]
+                          }
+                        ]
                       }
-                    )
+                    />
                   }
                 </div>
                 
