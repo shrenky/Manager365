@@ -21,7 +21,9 @@
     "@types/webpack-env": "1.13.1",
     "office-ui-fabric-react": "^6.55.0",
     "react": "15.6.2",
-    "react-dom": "15.6.2"
+    "react-dom": "15.6.2",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0"
   },
   "devDependencies": {
     "@microsoft/sp-build-web": "1.5.1",
