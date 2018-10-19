@@ -20,11 +20,10 @@ export interface INodeStates{
 }
 
 export default class Node extends React.Component<INodeProps, INodeStates>{
-    private sub:string[];
     constructor(props){
         super(props);
         this.state= {
-            isChildrenLoaded: false,
+            isChildrenLoaded: true,
             isFold: this.props.fold,
             childrenUrls: []
         };
@@ -38,7 +37,7 @@ export default class Node extends React.Component<INodeProps, INodeStates>{
                             <div>
                                 {
                                     
-                                        this.sub.map(url=>{
+                                        this.state.childrenUrls.map(url=>{
                                             console.log('Web: ' + url);
                                             return <Node url={url} fold={false} type={'web'} level={2} spHttpClient={httpClient} />
                                         })
@@ -60,13 +59,17 @@ export default class Node extends React.Component<INodeProps, INodeStates>{
 
     private loadChildren()
     {
+        this.setState(
+            {
+                isChildrenLoaded: false
+            }
+        );
         if(this.props.type == 'site')
         {
             let self = this;
             let service = new SearchService(this.props.spHttpClient);
             service.getWebsFromSite(this.props.url).then((urls) => { 
                 console.log(urls);
-                self.sub = urls;
                 this.setState(
                             {
                                 isChildrenLoaded: true,
