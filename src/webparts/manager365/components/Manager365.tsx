@@ -10,7 +10,7 @@ import {
   INavProps
 } from 'office-ui-fabric-react';
 
-import SiteNode from './nodes/SiteNode';
+import Node from './nodes/Node';
 
 export default class Manager365 extends React.Component<IManager365Props, IManager365States> {
   constructor(props)
@@ -31,19 +31,39 @@ export default class Manager365 extends React.Component<IManager365Props, IManag
     )
 
     const loading = this.state.loading ? <Spinner label='loading...' /> : <div />;
-
+    const httpClient = this.props.spHttpClient;
     return (
-      <div className={ Styles.manager365 }>
-        <div className={ Styles.container }>
-          <div className={ Styles.row }>
-            <div className={ Styles.column }>
+            <div>
               <span className={ Styles.title }>Welcome to Manager365 Webpart!</span>
               <p className={ Styles.subTitle }>View/Manage your SharePoint Online by Manager365.</p>
               <p className={ Styles.description }>{escape(this.props.description)}</p>
                 {
                   loading
                 }
-                <div className="ms-NavExample-LeftPane">
+                {
+                  this.state.siteUrls.map(
+                    function(url, index){ 
+                      return <Node url={url} fold={true} level={1} type={'site'} spHttpClient={httpClient}/> ;
+                    }
+                  )
+                }
+                
+            </div>
+    );
+  }
+
+  public loadSiteCollection(): void{
+    let self = this;
+    let serverUrl = `${window.location.protocol}//${window.location.hostname}`;
+    let service = new SearchService(this.props.spHttpClient);
+    service.getSitesStartingWith(serverUrl).then((urls) => { 
+        self.setState({loading:false, siteUrls: urls})
+      }).catch(e=>console.log(e));
+  }
+}
+
+/*
+<div className="ms-NavExample-LeftPane">
                   {
                     <Nav
                       groups={
@@ -62,21 +82,4 @@ export default class Manager365 extends React.Component<IManager365Props, IManag
                       }
                     />
                   }
-                </div>
-                
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  public loadSiteCollection(): void{
-    let self = this;
-    let serverUrl = `${window.location.protocol}//${window.location.hostname}`;
-    let service = new SearchService(this.props.spHttpClient);
-    service.getSitesStartingWith(serverUrl).then((urls) => { 
-        self.setState({loading:false, siteUrls: urls})
-      }).catch(e=>console.log(e));
-  }
-}
+                </div> */
