@@ -135,7 +135,6 @@ export class SearchService {
 		});	
 	}
 
-
 	/**************************************************************************************************
 	 * Recursively executes the specified search query using batches of 500 results until all results are fetched
 	 * @param queryParameters : The search query parameters following the "/_api/search/query?" part
