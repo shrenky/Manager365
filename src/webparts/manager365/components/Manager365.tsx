@@ -10,7 +10,14 @@ import {
   INavProps
 } from 'office-ui-fabric-react';
 
-import Node from './nodes/Node';
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import reducer from './reducers/Reducers'
+import generateTree from './generateTree'
+import Node from './containers/Node'
+
+const tree = generateTree();
+const store = createStore(reducer, tree as any);
 
 export default class Manager365 extends React.Component<IManager365Props, IManager365States> {
   constructor(props)
@@ -24,31 +31,10 @@ export default class Manager365 extends React.Component<IManager365Props, IManag
   }
 
   public render(): React.ReactElement<IManager365Props> {
-    let siteLinks: any = this.state.siteUrls.map(
-      function(url, index){ 
-        return {name: url, url: url, key: index} ;
-      }
-    )
-
-    const loading = this.state.loading ? <Spinner label='loading...' /> : <div />;
-    const httpClient = this.props.spHttpClient;
     return (
-            <div>
-              <span className={ Styles.title }>Welcome to Manager365 Webpart!</span>
-              <p className={ Styles.subTitle }>View/Manage your SharePoint Online by Manager365.</p>
-              <p className={ Styles.description }>{escape(this.props.description)}</p>
-                {
-                  loading
-                }
-                {
-                  this.state.siteUrls.map(
-                    function(url, index){ 
-                      return <Node url={url} fold={true} level={1} type={'site'} spHttpClient={httpClient}/> ;
-                    }
-                  )
-                }
-                
-            </div>
+        <Provider store={store}>
+          <Node id={0} />
+        </Provider>
     );
   }
 
