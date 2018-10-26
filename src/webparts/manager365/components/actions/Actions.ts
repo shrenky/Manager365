@@ -8,9 +8,11 @@ export interface INodeAction {
     type: string;
     nodeId?:any;
     childId?: any;
+    counter?: number;
 }
 
-export function increment(nodeId: string): INodeAction {
+export function increment(nodeId): INodeAction {
+    console.log('in increment: ' + nodeId);
     return {
         type: INCREMENT,
         nodeId: nodeId
@@ -22,7 +24,7 @@ let nextId = 0
 export function createNode():INodeAction{
     return {
         type: CREATE_NODE,
-        nodeId: `new_${nextId++}`
+        nodeId: `${++nextId}`
     }
 }
 

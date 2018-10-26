@@ -1,15 +1,11 @@
 import * as React from 'react'
-import { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../actions/Actions';
-import { Dispatch } from 'redux';
 
 export interface INodeStateProps{
     type:string;
-    nodeId: any;
     id:any;
     counter:any;
-    parentId:any;
     childIds:any;
 
 }
@@ -19,8 +15,6 @@ export interface INodeDispatchProps{
     createNode();
     addChild(id, childId);
 }
-
-;
 
 export class Node extends React.Component<INodeStateProps & INodeDispatchProps> {
     constructor(props){
@@ -39,7 +33,7 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
       }
     
       render() {
-        const { counter, parentId, childIds } = this.props
+        const { counter, childIds } = this.props
         return (
           <div>
             Counter: {counter}
@@ -50,7 +44,9 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
             {' '}
             
             <ul>
-              {childIds.map(this.renderChild)}
+              {
+                childIds.map(this.renderChild)
+              }
               <li key="add">
                 <a href="#" // eslint-disable-line jsx-a11y/anchor-is-valid
                   onClick={this.handleAddChildClick}
@@ -64,8 +60,10 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
       }
 
     private handleIncrementClick() {
-        const { increment, nodeId } = this.props
-        increment(nodeId);
+        console.log('handleIncrementClick: '+ this.props);
+        const { increment, id } = this.props;
+        console.log(increment);
+        increment(id);
     }
 
     private handleAddChildClick(e){

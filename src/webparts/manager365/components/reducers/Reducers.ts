@@ -24,6 +24,7 @@ export function childIds(state, action: INodeAction){
 }
 
 export function node(state, action: INodeAction) {
+    console.log('in node');
     switch (action.type){
         case CREATE_NODE:
             return {
@@ -32,6 +33,7 @@ export function node(state, action: INodeAction) {
                 childIds: []
             }
         case INCREMENT:
+        console.log('in INCREMENT: ' + state);
             return {
                 ...state,
                 counter: state.counter + 1
