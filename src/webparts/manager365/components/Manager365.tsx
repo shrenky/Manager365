@@ -10,14 +10,17 @@ import {
   INavProps
 } from 'office-ui-fabric-react';
 
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import reducer from './reducers/Reducers'
 import generateTree from './generateTree'
 import Node from './containers/Node'
 
+import promiseMiddleware from 'redux-promise';
+import logger from 'redux-logger';
+
 const tree = generateTree();
-const store = createStore(reducer, tree as any);
+const store = createStore(reducer, tree as any, applyMiddleware(logger));
 
 export default class Manager365 extends React.Component<IManager365Props, IManager365States> {
   constructor(props)

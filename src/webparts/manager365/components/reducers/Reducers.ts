@@ -1,15 +1,10 @@
 import {
     INodeAction,
     INCREMENT,
-    increment,
     CREATE_NODE,
-    createNode,
     ADD_CHILD, 
-    addChild,
     REMOVE_CHILD,
-    removeChild,
     DELETE_NODE,
-    deleteNode
 } from '../actions/Actions';
 
 export function childIds(state, action: INodeAction){
