@@ -1,8 +1,13 @@
 export default function generateTree() {
+    let serverUrl = `${window.location.protocol}//${window.location.hostname}`;
     let tree = {
       0: {
         id: 0,
         counter: 0,
+        isFulfilled:false,
+        isRejected:false,
+        url: serverUrl,
+        urls:[],
         childIds: []
       }
     }

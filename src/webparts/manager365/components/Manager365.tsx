@@ -15,12 +15,12 @@ import { Provider } from 'react-redux'
 import reducer from './reducers/Reducers'
 import generateTree from './generateTree'
 import Node from './containers/Node'
-
-import promiseMiddleware from 'redux-promise';
+import thunk from 'redux-thunk';
+import promiseMiddleware from 'redux-promise-middleware';
 import logger from 'redux-logger';
 
 const tree = generateTree();
-const store = createStore(reducer, tree as any, applyMiddleware(logger));
+const store = createStore(reducer, tree as any, applyMiddleware(thunk, promiseMiddleware(), logger));
 
 export default class Manager365 extends React.Component<IManager365Props, IManager365States> {
   constructor(props)
@@ -30,13 +30,13 @@ export default class Manager365 extends React.Component<IManager365Props, IManag
   }
 
   public componentDidMount(): void {
-    this.loadSiteCollection();
+    //this.loadSiteCollection();
   }
 
   public render(): React.ReactElement<IManager365Props> {
     return (
         <Provider store={store}>
-          <Node id={0} />
+          <Node id={0} client={this.props.spHttpClient}/>
         </Provider>
     );
   }

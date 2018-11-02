@@ -5,6 +5,10 @@ import {
     ADD_CHILD, 
     REMOVE_CHILD,
     DELETE_NODE,
+    FETCH_DATA_FULFILLED,
+    FETCH_DATA_PENDING,
+    FETCH_DATA_REJECTED,
+    FETCH_DATA,
 } from '../actions/Actions';
 
 export function childIds(state, action: INodeAction){
@@ -39,6 +43,21 @@ export function node(state, action: INodeAction) {
             ...state,
             childIds: childIds(state.childIds, action)
           }
+        case FETCH_DATA_FULFILLED:
+          console.log('Fetch fulfilled: '+ action);
+          return{
+              ...state,
+              isFulfilled: true,
+              urls: action.payload
+          }
+        case FETCH_DATA_REJECTED:
+            console.log('Fetch pending');
+            return{
+                ...state,
+                isRejected: true,
+                error: action.payload
+            }
+
         default:
             return state;
     }
@@ -61,18 +80,24 @@ export function deleteMany(state, ids){
 }
   
 export default (state = {}, action) => {
-    const { nodeId } = action;
-    if (typeof nodeId === 'undefined') {
+    console.log('start reducer: ' + action.type, + ' nodeId: ' + action.meta);
+    const { nodeId, meta } = action;
+    let currentNodeId = nodeId;
+    if(meta)
+    {
+        currentNodeId = meta.nodeId
+    }
+    if (typeof currentNodeId === 'undefined') {
       return state;
     }
   
     if (action.type === DELETE_NODE) {
-      const descendantIds = getAllDescendantIds(state, nodeId);
-      return deleteMany(state, [ nodeId, ...descendantIds ]);
+      const descendantIds = getAllDescendantIds(state, currentNodeId);
+      return deleteMany(state, [ currentNodeId, ...descendantIds ]);
     }
-  
+  console.log('reducer ------ for: ' + state[currentNodeId]);
     return {
       ...state,
-      [nodeId]: node(state[nodeId], action)
+      [currentNodeId]: node(state[currentNodeId], action)
     }
 }
