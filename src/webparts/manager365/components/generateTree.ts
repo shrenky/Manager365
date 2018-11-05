@@ -3,6 +3,7 @@ export default function generateTree() {
     let tree = {
       0: {
         id: 0,
+        type: 'tenant',
         counter: 0,
         isFulfilled:false,
         isRejected:false,
@@ -10,7 +11,7 @@ export default function generateTree() {
         urls:[],
         childIds: []
       }
-    }
+    };
   
     /*for (let i = 1; i < 10; i++) {
       let parentId = Math.floor(Math.pow(Math.random(), 2) * i);

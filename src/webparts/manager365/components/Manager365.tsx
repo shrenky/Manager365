@@ -10,11 +10,11 @@ import {
   INavProps
 } from 'office-ui-fabric-react';
 
-import { createStore, applyMiddleware } from 'redux'
-import { Provider } from 'react-redux'
-import reducer from './reducers/Reducers'
-import generateTree from './generateTree'
-import Node from './containers/Node'
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import reducer from './reducers/Reducers';
+import generateTree from './generateTree';
+import Node from './containers/Node';
 import thunk from 'redux-thunk';
 import promiseMiddleware from 'redux-promise-middleware';
 import logger from 'redux-logger';
@@ -26,7 +26,7 @@ export default class Manager365 extends React.Component<IManager365Props, IManag
   constructor(props)
   {
     super(props);
-    this.state={loading:true, siteUrls:[]}
+    this.state={loading:true, siteUrls:[]};
   }
 
   public componentDidMount(): void {
@@ -46,7 +46,7 @@ export default class Manager365 extends React.Component<IManager365Props, IManag
     let serverUrl = `${window.location.protocol}//${window.location.hostname}`;
     let service = new SearchService(this.props.spHttpClient);
     service.getSitesStartingWith(serverUrl).then((urls) => { 
-        self.setState({loading:false, siteUrls: urls})
+        self.setState({loading:false, siteUrls: urls});
       }).catch(e=>console.log(e));
   }
 }

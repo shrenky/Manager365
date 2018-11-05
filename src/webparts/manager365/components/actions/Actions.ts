@@ -6,12 +6,13 @@ export const DELETE_NODE = 'DELETE_NODE';
 export const ADD_CHILD = 'ADD_CHILD';
 export const REMOVE_CHILD = 'REMOVE_CHILD';
 
-export const FETCH_DATA = 'FETCH_DATA'
-export const FETCH_DATA_PENDING = 'FETCH_DATA_PENDING'
-export const FETCH_DATA_FULFILLED = 'FETCH_DATA_FULFILLED'
-export const FETCH_DATA_REJECTED = 'FETCH_DATA_REJECTED'
+export const FETCH_DATA = 'FETCH_DATA';
+export const FETCH_DATA_PENDING = 'FETCH_DATA_PENDING';
+export const FETCH_DATA_FULFILLED = 'FETCH_DATA_FULFILLED';
+export const FETCH_DATA_REJECTED = 'FETCH_DATA_REJECTED';
 
 import { SearchService } from '../../data/SearchService';
+import treeCommons from '../../utility/treeCommons';
 
 export interface INodeAction {
     type: string;
@@ -30,12 +31,11 @@ export function fetchData(nodeId, spHttpClient: any, url: string){
         payload: service.getSitesStartingWith(url).then((urls) => { 
             console.log('get urls: ' + urls);
             return urls;
-            //fetchDataFulfilled(urls);
           }),
           meta: {
             nodeId: nodeId
           }
-    }
+    };
 }
 
 export function increment(nodeId): INodeAction {
@@ -43,23 +43,22 @@ export function increment(nodeId): INodeAction {
     return {
         type: INCREMENT,
         nodeId: nodeId
-    }
+    };
 }
 
-let nextId = 0
-
-export function createNode():INodeAction{
+export function createNode(payload):INodeAction{
     return {
         type: CREATE_NODE,
-        nodeId: `${++nextId}`
-    }
+        nodeId: `${treeCommons.getNextNodeId()}`,
+        payload: payload
+    };
 }
 
 export function deleteNode(nodeId):INodeAction{
     return {
         type: DELETE_NODE,
         nodeId
-    }
+    };
 }
 
 export function addChild(nodeId, childId):INodeAction{
@@ -67,8 +66,7 @@ export function addChild(nodeId, childId):INodeAction{
         type: ADD_CHILD,
         nodeId,
         childId
-    }
-  
+    };
 }
 
 export function removeChild(nodeId, childId){
@@ -76,5 +74,5 @@ export function removeChild(nodeId, childId){
         type: REMOVE_CHILD,
         nodeId,
         childId
-    }
+    };
 }

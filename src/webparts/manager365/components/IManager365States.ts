@@ -1,5 +1,5 @@
 export interface IManager365States {
-    loading: boolean,
-    siteUrls: string[]
+    loading: boolean;
+    siteUrls: string[];
   }
   
