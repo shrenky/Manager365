@@ -18,7 +18,7 @@ export interface INodeStateProps{
 export interface INodeDispatchProps{
     increment(id);
     createNode(payload);
-    fetchData(nodeId, client, url);
+    fetchData(type, nodeId, client, url);
     addChild(id, childId);
 }
 
@@ -33,7 +33,7 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
         const { id } = this.props;
         return (
           <li key={childId}>
-            <ConnectedNode id={childId} parentId={id} />
+            <ConnectedNode id={childId} parentId={id} client={this.props.client}/>
           </li>
         );
       }
@@ -69,9 +69,9 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
     }
 
     private handleLoadClick(){
-        console.log(actions);
-        const { fetchData, id, url} = this.props;
-        fetchData(id, this.props.client, url);
+        console.log(this.props);
+        const { fetchData, id, url, type } = this.props;
+        fetchData(type, id, this.props.client, url);
     }
 
     private handleIncrementClick() {

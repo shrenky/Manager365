@@ -109,14 +109,14 @@ export default (state = {}, action) => {
         if(urls.length > 0)
         {
             console.log(state);
-            const data = createNodesFromUrls(urls);
+            const nodePros = state[currentNodeId];
+            const childIdsArr = nodePros.childIds;
+            const data = createNodesFromUrls(nodePros.type, urls);
             const newNodes = data.nodes;
             const ids = data.ids;
             console.log(data);
-            const nodeState = state[currentNodeId];
-            const childIdsArr = nodeState.childIds;
             const newNodeState = {
-                ...nodeState,
+                ...nodePros,
                 isFulfilled: true,
                 urls: action.payload,
                 childIds: [...childIdsArr, ...ids]
@@ -140,8 +140,13 @@ export default (state = {}, action) => {
     };
 };
 
-export function createNodesFromUrls(urls)
+export function createNodesFromUrls(type, urls)
 {
+    let nodeType = type;
+    if(nodeType == 'tenant')
+    {
+        nodeType = 'site';
+    }
     let nodes = {};
     let idArr = [];
     urls.forEach(url=>{
@@ -149,6 +154,7 @@ export function createNodesFromUrls(urls)
         idArr.push(id);
         nodes[id] = {
             id: id,
+            type: nodeType,
             counter: 0,
             isFulfilled:false,
             isRejected:false,

@@ -23,19 +23,37 @@ export interface INodeAction {
     payload?: any;
 }
 
-export function fetchData(nodeId, spHttpClient: any, url: string){
-    console.log('in fetch');
+export function fetchData(type, nodeId, spHttpClient: any, url: string){
+    console.log('in fetch, httpClient: ' + spHttpClient);
     const service = new SearchService(spHttpClient);
-    return {
-        type: FETCH_DATA,
-        payload: service.getSitesStartingWith(url).then((urls) => { 
-            console.log('get urls: ' + urls);
-            return urls;
-          }),
-          meta: {
-            nodeId: nodeId
-          }
-    };
+    if(type == 'tenant')
+    {
+        console.log('get sites');
+        return {
+            type: FETCH_DATA,
+            payload: service.getSitesStartingWith(url).then((urls) => { 
+                console.log('get urls: ' + urls);
+                return urls;
+              }),
+              meta: {
+                nodeId: nodeId
+              }
+        };
+    }
+    else
+    {
+        console.log('get webs');
+        return {
+            type: FETCH_DATA,
+            payload: service.getWebsFromSite(url).then((urls) => { 
+                console.log('get web urls: ' + urls);
+                return urls;
+              }),
+              meta: {
+                nodeId: nodeId
+              }
+        };
+    }
 }
 
 export function increment(nodeId): INodeAction {
