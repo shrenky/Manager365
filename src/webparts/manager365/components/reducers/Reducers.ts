@@ -147,18 +147,28 @@ export function createNodesFromUrls(type, urls)
     {
         nodeType = 'site';
     }
+    else if(nodeType == 'site')
+    {
+        nodeType = 'web';
+    }
+    else if(nodeType == 'web')
+    {
+        nodeType = 'list';
+    }
+
     let nodes = {};
     let idArr = [];
     urls.forEach(url=>{
         const id = treeCommons.getNextNodeId();
         idArr.push(id);
+        let urlorTitle = nodeType == 'list' ? url.title : url;
         nodes[id] = {
             id: id,
             type: nodeType,
             counter: 0,
             isFulfilled:false,
             isRejected:false,
-            url: url,
+            url: urlorTitle,
             urls:[],
             childIds: []
         };
