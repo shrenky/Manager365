@@ -1,6 +1,6 @@
-## manager-365
+## manager365
 
-This is where you include your WebPart documentation.
+Webpart built on SharePoint Framework to manage SharePoint online.
 
 ### Building the code
 
