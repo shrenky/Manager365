@@ -35,9 +35,7 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
     public renderChild = childId => {
         const { id } = this.props;
         return (
-          <li key={childId}>
-            <ConnectedNode id={childId} parentId={id} client={this.props.client}/>
-          </li>
+          <ConnectedNode id={childId} parentId={id} client={this.props.client}/>
         );
       }
     
@@ -49,12 +47,13 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
           <Icon style={{cursor:'pointer'}} iconName='ExploreContentSingle' onClick={this.handleLoadClick}/>{' '}
           <Icon iconName={iconName} />{' '}
           {url}
-          <ul>
+          <div style={{marginLeft:'20px'}}>
             {
               this.props.isPending? <Spinner type={SpinnerType.normal} size={SpinnerSize.small}/> : 
               childIds.map(this.renderChild)
             }
-          </ul>
+          </div>
+            
         </div>
       );
     }
