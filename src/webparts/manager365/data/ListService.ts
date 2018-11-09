@@ -57,11 +57,12 @@ export class ListService {
 	 **************************************************************************************************/
 	public getListTitlesFromWeb(webUrl: string): Promise<IListTitle[]> {
 		return new Promise<IListTitle[]>((resolve,reject) => {
-			let endpoint = Text.format("{0}/_api/web/lists?$select=Id,Title&$filter=(IsPrivate eq false) and (IsCatalog eq false) and (Hidden eq false)", webUrl);
+			//let endpoint = Text.format("{0}/_api/web/lists?$select=Id,Title&$filter=(IsPrivate eq false) and (IsCatalog eq false) and (Hidden eq false)", webUrl);let endpoint = Text.format("{0}/_api/web/lists?$select=Id,Title&$filter=(IsPrivate eq false) and (IsCatalog eq false) and (Hidden eq false)", webUrl);
+			let endpoint = Text.format("{0}/_api/web/lists?$filter=(IsPrivate eq false) and (IsCatalog eq false) and (Hidden eq false)", webUrl);
 			this.spHttpClient.get(endpoint, SPHttpClient.configurations.v1).then((response: SPHttpClientResponse) => {
 				if(response.ok) {
 					response.json().then((data: any) => {
-						let listTitles:IListTitle[] = data.value.map((list) => { return { id: list.Id, title: list.Title }; });
+						let listTitles:IListTitle[] = data.value.map((list) => {console.log(list); return { id: list.Id, title: list.Title }; });
 						resolve(listTitles.sort((a,b) => { return Number(a.title > b.title); }));
 					})
 					.catch((error) => { reject(error); });

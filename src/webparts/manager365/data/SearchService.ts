@@ -166,7 +166,7 @@ export class SearchService {
 		for(let result of  results.PrimaryQueryResult.RelevantResults.Table.Rows) {
 			// Stores the index of the "Path" cell on the first loop in order to avoid finding the cell on every loop
 			if(!pathIndex) {
-				let pathCell = result.Cells.filter((cell) => { return cell.Key == "Path"; })[0];
+				let pathCell = result.Cells.filter((cell) => { return cell.Key == "Path"; })[0]; //get Site Collection's Path, UrlZone, Culture
 				pathIndex = result.Cells.indexOf(pathCell);
 			}
 			urls.push(result.Cells[pathIndex].Value.toLowerCase().trim());

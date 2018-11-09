@@ -42,11 +42,10 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
       console.log('in render');
       console.log(this.props.url);
       console.log(this.props.urls);
-      console.log(treeCommons.getNextNodeId());
       const { counter, childIds, url } = this.props;
       return (
         <div>
-          Url: {url}
+          {url}
           {' '}
           Counter: {counter}
           {' '}

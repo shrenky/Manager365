@@ -14,7 +14,7 @@
     "group": { "default": "Other" },
     "title": { "default": "Manager365" },
     "description": { "default": "A webpart to manage Office 365" },
-    "officeFabricIconFontName": "Page",
+    "officeFabricIconFontName": "Sunny",
     "properties": {
       "description": "Manager365"
     }
