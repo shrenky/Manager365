@@ -2,15 +2,18 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions/Actions';
 import treeCommons from '../../utility/treeCommons';
+import { Icon, Spinner, SpinnerType, SpinnerSize } from 'office-ui-fabric-react';
+import { NODE_TYPE } from '../generateTree';
 
 export interface INodeStateProps{
-    type:string;
+    type:NODE_TYPE;
     id:any;
     counter:any;
     childIds:any;
     client:any;
     url:string;
     urls:string[];
+    isPending:false;
     isFulfilled:false;
     isRejected:false;
 }
@@ -39,27 +42,16 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
       }
     
     public render() {
-      console.log('in render');
-      console.log(this.props.url);
-      console.log(this.props.urls);
-      const { counter, childIds, url } = this.props;
+      const iconName = this.getIconName();
+      const { childIds, url } = this.props;
       return (
         <div>
+          <Icon style={{cursor:'pointer'}} iconName='ExploreContentSingle' onClick={this.handleLoadClick}/>{' '}
+          <Icon iconName={iconName} />{' '}
           {url}
-          {' '}
-          Counter: {counter}
-          {' '}
-          <button onClick={this.handleIncrementClick}>
-            +
-          </button>
-          {' '}
-          <button onClick={this.handleLoadClick}>
-            Load
-          </button>
-          {' '}
-          
           <ul>
             {
+              this.props.isPending? <Spinner type={SpinnerType.normal} size={SpinnerSize.small}/> : 
               childIds.map(this.renderChild)
             }
           </ul>
@@ -68,7 +60,6 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
     }
 
     private handleLoadClick(){
-        console.log(this.props);
         const { fetchData, id, url, type } = this.props;
         fetchData(type, id, this.props.client, url);
     }
@@ -77,6 +68,34 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
         console.log('handleIncrementClick: '+ this.props);
         const { increment, id } = this.props;
         increment(id);
+    }
+
+    private getIconName():string {
+      const { type } = this.props;
+      let name = '';
+      switch (type) {
+        case NODE_TYPE.TENANT:{
+          name = 'AdminSLogoInverse32';
+          break;
+        }
+        case NODE_TYPE.SITE:{
+          name = 'SquareShapeSolid';
+          break;
+        }
+        case NODE_TYPE.WEB:{
+          name = 'StatusCircleOuter';
+          break;
+        }
+        case NODE_TYPE.LIST:{
+          name = 'StatusTriangleOuter';
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+
+      return name;
     }
 }
 

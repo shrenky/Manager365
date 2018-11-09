@@ -14,6 +14,7 @@ export const FETCH_DATA_REJECTED = 'FETCH_DATA_REJECTED';
 import { SearchService } from '../../data/SearchService';
 import treeCommons from '../../utility/treeCommons';
 import { ListService, IListTitle } from "../../data/ListService";
+import {NODE_TYPE} from '../generateTree';
 
 export interface INodeAction {
     type: string;
@@ -24,9 +25,9 @@ export interface INodeAction {
     payload?: any;
 }
 
-export function fetchData(type, nodeId, spHttpClient: any, url: string){
+export function fetchData(type:NODE_TYPE, nodeId, spHttpClient: any, url: string){
     console.log('in fetch, httpClient: ' + spHttpClient);
-    if(type == 'tenant')
+    if(type == NODE_TYPE.TENANT)
     {
         const service = new SearchService(spHttpClient);
         console.log('get sites');
@@ -41,7 +42,7 @@ export function fetchData(type, nodeId, spHttpClient: any, url: string){
               }
         };
     }
-    else if(type == 'site')
+    else if(type == NODE_TYPE.SITE)
     {
         const service = new SearchService(spHttpClient);
         console.log('get webs');
@@ -56,7 +57,7 @@ export function fetchData(type, nodeId, spHttpClient: any, url: string){
               }
         };
     }
-    else if(type == 'web')
+    else if(type == NODE_TYPE.WEB)
     {
         console.log('get lists from: ' + url);
         const listService = new ListService(spHttpClient);

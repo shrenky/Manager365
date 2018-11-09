@@ -11,6 +11,7 @@ import {
     FETCH_DATA,
 } from '../actions/Actions';
 import treeCommons from '../../utility/treeCommons';
+import { NODE_TYPE } from '../generateTree';
 
 export function childIds(state, action: INodeAction){
     switch(action.type){
@@ -48,18 +49,29 @@ export function node(state, action: INodeAction) {
             ...state,
             childIds: childIds(state.childIds, action)
           };
+        case FETCH_DATA_PENDING:
+            return{
+                ...state,
+                isPending:true,
+                isFulfilled: false,
+                isRejected: false,
+                urls: action.payload,
+                childId: []
+            };
         case FETCH_DATA_FULFILLED:
-          console.log('Fetch fulfilled: '+ action);
           return{
               ...state,
+              isPending:false,
               isFulfilled: true,
+              isRejected: false,
               urls: action.payload,
               childId: []
           };
         case FETCH_DATA_REJECTED:
-            console.log('Fetch pending');
             return {
                 ...state,
+                isPending:false,
+                isFulfilled: false,
                 isRejected: true,
                 error: action.payload
             };
@@ -117,7 +129,9 @@ export default (state = {}, action) => {
             console.log(data);
             const newNodeState = {
                 ...nodePros,
+                isPending: false,
                 isFulfilled: true,
+                isRejected: false,
                 urls: action.payload,
                 childIds: [...childIdsArr, ...ids]
             };
@@ -143,17 +157,17 @@ export default (state = {}, action) => {
 export function createNodesFromUrls(type, urls)
 {
     let nodeType = type;
-    if(nodeType == 'tenant')
+    if(nodeType == NODE_TYPE.TENANT)
     {
-        nodeType = 'site';
+        nodeType = NODE_TYPE.SITE;
     }
-    else if(nodeType == 'site')
+    else if(nodeType == NODE_TYPE.SITE)
     {
-        nodeType = 'web';
+        nodeType = NODE_TYPE.WEB;
     }
-    else if(nodeType == 'web')
+    else if(nodeType == NODE_TYPE.WEB)
     {
-        nodeType = 'list';
+        nodeType = NODE_TYPE.LIST;
     }
 
     let nodes = {};
@@ -161,7 +175,7 @@ export function createNodesFromUrls(type, urls)
     urls.forEach(url=>{
         const id = treeCommons.getNextNodeId();
         idArr.push(id);
-        let urlorTitle = nodeType == 'list' ? url.title : url;
+        let urlorTitle = nodeType == NODE_TYPE.LIST ? url.title : url;
         nodes[id] = {
             id: id,
             type: nodeType,

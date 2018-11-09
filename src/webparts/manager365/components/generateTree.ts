@@ -1,10 +1,19 @@
+export enum NODE_TYPE
+{
+  TENANT,
+  SITE,
+  WEB,
+  LIST
+}
+
 export default function generateTree() {
     let serverUrl = `${window.location.protocol}//${window.location.hostname}`;
     let tree = {
       0: {
         id: 0,
-        type: 'tenant',
+        type: NODE_TYPE.TENANT,
         counter: 0,
+        isPending:false,
         isFulfilled:false,
         isRejected:false,
         url: serverUrl,
