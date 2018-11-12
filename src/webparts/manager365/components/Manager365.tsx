@@ -1,9 +1,6 @@
 import * as React from 'react';
-import Styles from './Manager365.module.scss';
 import { IManager365Props } from './IManager365Props';
 import { IManager365States } from './IManager365States';
-import { escape } from '@microsoft/sp-lodash-subset';
-import { SearchService } from '../data/SearchService';
 import { 
   Spinner,
   Nav,
@@ -29,46 +26,12 @@ export default class Manager365 extends React.Component<IManager365Props, IManag
     this.state={loading:true, siteUrls:[]};
   }
 
-  public componentDidMount(): void {
-    //this.loadSiteCollection();
-  }
-
   public render(): React.ReactElement<IManager365Props> {
+    //loading node starts from 1, node 0 is selected node.
     return (
         <Provider store={store}>
-          <Node id={0} client={this.props.spHttpClient}/>
+          <Node id={1} client={this.props.spHttpClient}/>
         </Provider>
     );
   }
-
-  public loadSiteCollection(): void{
-    let self = this;
-    let serverUrl = `${window.location.protocol}//${window.location.hostname}`;
-    let service = new SearchService(this.props.spHttpClient);
-    service.getSitesStartingWith(serverUrl).then((urls) => { 
-        self.setState({loading:false, siteUrls: urls});
-      }).catch(e=>console.log(e));
-  }
 }
-
-/*
-<div className="ms-NavExample-LeftPane">
-                  {
-                    <Nav
-                      groups={
-                        [
-                          {
-                            links: [
-                              {
-                                name: "Tenant",
-                                url: "",
-                                links: siteLinks,
-                                isExpanded: false
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    />
-                  }
-                </div> */

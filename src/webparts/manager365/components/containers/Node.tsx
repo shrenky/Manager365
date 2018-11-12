@@ -17,7 +17,7 @@ export interface INodeStateProps{
     isFulfilled:false;
     isRejected:false;
     unfold:false;
-
+    isSelected: false;
 }
 
 export interface INodeDispatchProps{
@@ -26,6 +26,7 @@ export interface INodeDispatchProps{
     fetchData(type, nodeId, client, url);
     addChild(id, childId);
     fold_unfold(id);
+    select_node(id);
 }
 
 export class Node extends React.Component<INodeStateProps & INodeDispatchProps> {
@@ -33,6 +34,7 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
         super(props);
         this.handleLoadClick = this.handleLoadClick.bind(this);
         this.handleIncrementClick = this.handleIncrementClick.bind(this);
+        this.onNodeSelected = this.onNodeSelected.bind(this);
     }
 
     public renderChild = childId => {
@@ -44,13 +46,13 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
     
     public render() {
       const iconName = this.getIconName();
-      const { childIds, url, unfold } = this.props;
+      const { childIds, url, unfold, isSelected } = this.props;
       //CollapseContentSingle
       return (
         <div>
           <Icon style={{cursor:'pointer'}} iconName={unfold ? 'CollapseContentSingle' : 'ExploreContentSingle'} onClick={this.handleLoadClick}/>{' '}
           <Icon iconName={iconName} />{' '}
-          {url}
+          {<label className={isSelected ? Styles.Manager365SelectedNode : Styles.Manager365UnSelectedNode} onClick={this.onNodeSelected}>{url}</label>}
           <div className={unfold ? Styles.Manager365UnFold : Styles.Manager365Fold}>
             {
               this.props.isPending? <Spinner type={SpinnerType.normal} size={SpinnerSize.small}/> : 
@@ -60,6 +62,11 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
             
         </div>
       );
+    }
+
+    private onNodeSelected(){
+      const { id, select_node } = this.props;
+      select_node(id);
     }
 
     private handleLoadClick(){

@@ -9,7 +9,8 @@ import {
     FETCH_DATA_PENDING,
     FETCH_DATA_REJECTED,
     FETCH_DATA,
-    FOLD_UNFOLD
+    FOLD_UNFOLD,
+    SELECT_NODE
 } from '../actions/Actions';
 import treeCommons from '../../utility/treeCommons';
 import { NODE_TYPE } from '../generateTree';
@@ -62,7 +63,7 @@ export function node(state, action: INodeAction) {
                 isFulfilled: false,
                 isRejected: false,
                 urls: action.payload,
-                childId: []
+                childIds: []
             };
         case FETCH_DATA_FULFILLED:
             return{
@@ -71,7 +72,7 @@ export function node(state, action: INodeAction) {
                 isFulfilled: true,
                 isRejected: false,
                 urls: action.payload,
-                childId: []
+                childIds: []
             };
         case FETCH_DATA_REJECTED:
             return {
@@ -119,7 +120,35 @@ export default (state = {}, action) => {
       const descendantIds = getAllDescendantIds(state, currentNodeId);
       return deleteMany(state, [ currentNodeId, ...descendantIds ]);
     }
-  console.log('reducer ------ for: ' + state[currentNodeId]);
+
+    if(action.type === SELECT_NODE)
+    {
+        const lastSelectedNode = state[0];
+        let lastSelectedNodeId = 0;
+        const selectedNode = state[currentNodeId];
+        if(lastSelectedNode != undefined)
+        {
+            lastSelectedNodeId = lastSelectedNode.id;
+
+            return {
+                ...state,
+                0:{...selectedNode, isSelected:true},
+                [currentNodeId]:{...selectedNode, isSelected:true},
+                [lastSelectedNodeId]: {...lastSelectedNode, isSelected:false}
+            }
+        }
+        else
+        {
+            return {
+                ...state,
+                0:{...selectedNode, isSelected:true},
+                [currentNodeId]:{...selectedNode, isSelected:true}
+            }
+        }
+        
+    }
+    
+    console.log('reducer ------ for: ' + state[currentNodeId]);
 
     if(action.type == FETCH_DATA_FULFILLED){
         console.log('Fetch fulfilled 1: '+ action);

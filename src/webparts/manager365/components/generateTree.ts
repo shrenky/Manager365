@@ -9,8 +9,8 @@ export enum NODE_TYPE
 export default function generateTree() {
     let serverUrl = `${window.location.protocol}//${window.location.hostname}`;
     let tree = {
-      0: {
-        id: 0,
+      1: {
+        id: 1,
         type: NODE_TYPE.TENANT,
         counter: 0,
         isPending:false,
@@ -20,6 +20,7 @@ export default function generateTree() {
         urls:[],
         childIds: [],
         unfold: false,
+        isSelected: false,
 
         properties:{}
 

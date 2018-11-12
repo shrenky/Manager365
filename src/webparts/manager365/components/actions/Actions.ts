@@ -12,6 +12,7 @@ export const FETCH_DATA_FULFILLED = 'FETCH_DATA_FULFILLED';
 export const FETCH_DATA_REJECTED = 'FETCH_DATA_REJECTED';
 
 export const FOLD_UNFOLD = 'FOLD_UNFOLD';
+export const SELECT_NODE = 'SELECT_NODE';
 
 import { SearchService } from '../../data/SearchService';
 import treeCommons from '../../utility/treeCommons';
@@ -31,6 +32,14 @@ export function fold_unfold(nodeId): INodeAction {
     console.log('fold_unfold: ' + nodeId);
     return {
         type: FOLD_UNFOLD,
+        nodeId: nodeId
+    }
+}
+
+export function select_node(nodeId): INodeAction {
+    console.log('select_node: ' + nodeId);
+    return {
+        type: SELECT_NODE,
         nodeId: nodeId
     }
 }
