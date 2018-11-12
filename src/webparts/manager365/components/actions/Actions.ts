@@ -11,6 +11,8 @@ export const FETCH_DATA_PENDING = 'FETCH_DATA_PENDING';
 export const FETCH_DATA_FULFILLED = 'FETCH_DATA_FULFILLED';
 export const FETCH_DATA_REJECTED = 'FETCH_DATA_REJECTED';
 
+export const FOLD_UNFOLD = 'FOLD_UNFOLD';
+
 import { SearchService } from '../../data/SearchService';
 import treeCommons from '../../utility/treeCommons';
 import { ListService, IListTitle } from "../../data/ListService";
@@ -23,6 +25,14 @@ export interface INodeAction {
     counter?: number;
     loadNode?: any;
     payload?: any;
+}
+
+export function fold_unfold(nodeId): INodeAction {
+    console.log('fold_unfold: ' + nodeId);
+    return {
+        type: FOLD_UNFOLD,
+        nodeId: nodeId
+    }
 }
 
 export function fetchData(type:NODE_TYPE, nodeId, spHttpClient: any, url: string){

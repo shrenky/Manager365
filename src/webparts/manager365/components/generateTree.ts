@@ -19,6 +19,7 @@ export default function generateTree() {
         url: serverUrl,
         urls:[],
         childIds: [],
+        unfold: false,
 
         properties:{}
 

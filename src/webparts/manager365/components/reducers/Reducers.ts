@@ -9,6 +9,7 @@ import {
     FETCH_DATA_PENDING,
     FETCH_DATA_REJECTED,
     FETCH_DATA,
+    FOLD_UNFOLD
 } from '../actions/Actions';
 import treeCommons from '../../utility/treeCommons';
 import { NODE_TYPE } from '../generateTree';
@@ -45,10 +46,15 @@ export function node(state, action: INodeAction) {
         };
         case ADD_CHILD:
         case REMOVE_CHILD:
-          return {
-            ...state,
-            childIds: childIds(state.childIds, action)
-          };
+            return {
+                ...state,
+                childIds: childIds(state.childIds, action)
+            };
+        case FOLD_UNFOLD:
+            return {
+                ...state,
+                unfold: !state.unfold
+            };
         case FETCH_DATA_PENDING:
             return{
                 ...state,
@@ -59,14 +65,14 @@ export function node(state, action: INodeAction) {
                 childId: []
             };
         case FETCH_DATA_FULFILLED:
-          return{
-              ...state,
-              isPending:false,
-              isFulfilled: true,
-              isRejected: false,
-              urls: action.payload,
-              childId: []
-          };
+            return{
+                ...state,
+                isPending:false,
+                isFulfilled: true,
+                isRejected: false,
+                urls: action.payload,
+                childId: []
+            };
         case FETCH_DATA_REJECTED:
             return {
                 ...state,
