@@ -27,6 +27,7 @@ export interface INodeDispatchProps{
     addChild(id, childId);
     fold_unfold(id);
     select_node(id);
+    load_properties(type, listTitle, id);
 }
 
 export class Node extends React.Component<INodeStateProps & INodeDispatchProps> {
@@ -65,8 +66,9 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
     }
 
     private onNodeSelected(){
-      const { id, select_node } = this.props;
+      const { id, type, url, select_node, load_properties } = this.props;
       select_node(id);
+      load_properties(type, url, id);
     }
 
     private handleLoadClick(){

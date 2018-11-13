@@ -10,7 +10,8 @@ import {
     FETCH_DATA_REJECTED,
     FETCH_DATA,
     FOLD_UNFOLD,
-    SELECT_NODE
+    SELECT_NODE,
+    LOAD_PROPERTIES_FULFILLED
 } from '../actions/Actions';
 import treeCommons from '../../utility/treeCommons';
 import { NODE_TYPE } from '../generateTree';
@@ -149,6 +150,20 @@ export default (state = {}, action) => {
     }
     
     console.log('reducer ------ for: ' + state[currentNodeId]);
+
+
+    //handle actions for propertyform, needs to be in seperate reducer
+    if(action.type == LOAD_PROPERTIES_FULFILLED)
+    {
+        console.log('Load fulfilled: '+action);
+        let selectedNode = state[0];
+        return {
+            ...state,
+            0: {...selectedNode, properties:action.payload},
+            [currentNodeId]:{...selectedNode, properties:action.payload}
+        }
+    }
+
 
     if(action.type == FETCH_DATA_FULFILLED){
         console.log('Fetch fulfilled 1: '+ action);

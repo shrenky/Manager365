@@ -94,3 +94,25 @@
   background-color: white;
   color:black;
 }
+
+.Manager365Panel {
+  display:table;
+  overflow: auto;
+  width:100%;
+}
+
+.Manager365Row {
+  display:table-row;
+  width:100%;
+}
+
+.Manager365Left {
+  display:table-cell;
+  width:30%;
+}
+
+
+.Manager365Right {
+  display:table-cell;
+  width:70%;
+}

@@ -15,6 +15,8 @@ import Node from './containers/Node';
 import thunk from 'redux-thunk';
 import promiseMiddleware from 'redux-promise-middleware';
 import logger from 'redux-logger';
+import ConnectedForm from './containers/PropertyForm';
+import Styles from './Manager365.module.scss';
 
 const tree = generateTree();
 const store = createStore(reducer, tree as any, applyMiddleware(thunk, promiseMiddleware(), logger));
@@ -30,7 +32,14 @@ export default class Manager365 extends React.Component<IManager365Props, IManag
     //loading node starts from 1, node 0 is selected node.
     return (
         <Provider store={store}>
-          <Node id={1} client={this.props.spHttpClient}/>
+          <div>
+            <div>
+              <Node id={1} client={this.props.spHttpClient}/>
+            </div>
+            <div >
+              <ConnectedForm id={0} client={this.props.spHttpClient}/>
+            </div>
+          </div>
         </Provider>
     );
   }

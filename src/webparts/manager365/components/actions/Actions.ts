@@ -1,5 +1,3 @@
-import { getChildren } from "office-ui-fabric-react";
-
 export const INCREMENT = 'INCREMENT';
 export const CREATE_NODE = 'CREATE_NODE';
 export const DELETE_NODE = 'DELETE_NODE';
@@ -13,11 +11,18 @@ export const FETCH_DATA_REJECTED = 'FETCH_DATA_REJECTED';
 
 export const FOLD_UNFOLD = 'FOLD_UNFOLD';
 export const SELECT_NODE = 'SELECT_NODE';
+export const LOAD_PROPERTIES = 'LOAD_PROPERTIES';
+export const LOAD_PROPERTIES_PENDING = 'LOAD_PROPERTIES_PENDING';
+export const LOAD_PROPERTIES_FULFILLED = 'LOAD_PROPERTIES_FULFILLED';
+export const LOAD_PROPERTIES_REJECTED = 'LOAD_PROPERTIES_REJECTED';
 
 import { SearchService } from '../../data/SearchService';
 import treeCommons from '../../utility/treeCommons';
 import { ListService, IListTitle } from "../../data/ListService";
 import {NODE_TYPE} from '../generateTree';
+import {
+    sp
+} from '@pnp/sp';
 
 export interface INodeAction {
     type: string;
@@ -42,6 +47,24 @@ export function select_node(nodeId): INodeAction {
         type: SELECT_NODE,
         nodeId: nodeId
     }
+}
+
+export function load_properties(type:NODE_TYPE, listTitle: string, nodeId) {
+    console.log('load_properties' + nodeId);
+    if(type == NODE_TYPE.LIST)
+    {
+        return {
+            type:LOAD_PROPERTIES,
+            payload: sp.web.lists.getByTitle(listTitle).get().then(listProps =>{
+                console.log(listProps);
+                return listProps;
+            }),
+            meta: {
+                nodeId: nodeId
+            }
+        }
+    }
+    
 }
 
 export function fetchData(type:NODE_TYPE, nodeId, spHttpClient: any, url: string){
