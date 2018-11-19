@@ -8,10 +8,12 @@ import Styles from '../Manager365.module.scss';
 export interface INodeStateProps{
     type:NODE_TYPE;
     id:any;
+    imageUrl:string;
     counter:any;
     childIds:any;
     client:any;
     url:string;
+    title:string;
     urls:string[];
     isPending:false;
     isFulfilled:false;
@@ -27,7 +29,7 @@ export interface INodeDispatchProps{
     addChild(id, childId);
     fold_unfold(id);
     select_node(id);
-    load_properties(type, listTitle, id);
+    load_properties(type, nodeId, client, url);
 }
 
 export class Node extends React.Component<INodeStateProps & INodeDispatchProps> {
@@ -46,14 +48,13 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
     }
     
     public render() {
-      const iconName = this.getIconName();
-      const { childIds, url, unfold, isSelected } = this.props;
-      //CollapseContentSingle
+      const icon = this.getIcon();
+      const { childIds, url, title,  unfold, isSelected } = this.props;
       return (
         <div>
           <Icon style={{cursor:'pointer'}} iconName={unfold ? 'CollapseContentSingle' : 'ExploreContentSingle'} onClick={this.handleLoadClick}/>{' '}
-          <Icon iconName={iconName} />{' '}
-          {<label className={isSelected ? Styles.Manager365SelectedNode : Styles.Manager365UnSelectedNode} onClick={this.onNodeSelected}>{url}</label>}
+          { icon }{' '}
+          {<label className={isSelected ? Styles.Manager365SelectedNode : Styles.Manager365UnSelectedNode} onClick={this.onNodeSelected}>{url == '' ? title: url}</label>}
           <div className={unfold ? Styles.Manager365UnFold : Styles.Manager365Fold}>
             {
               this.props.isPending? <Spinner type={SpinnerType.normal} size={SpinnerSize.small}/> : 
@@ -68,7 +69,7 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
     private onNodeSelected(){
       const { id, type, url, select_node, load_properties } = this.props;
       select_node(id);
-      load_properties(type, url, id);
+      load_properties(type, id, this.props.client, url);
     }
 
     private handleLoadClick(){
@@ -87,32 +88,31 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
         increment(id);
     }
 
-    private getIconName():string {
-      const { type } = this.props;
+    private getIcon():any {
+      const { type, imageUrl } = this.props;
       let name = '';
       switch (type) {
         case NODE_TYPE.TENANT:{
           name = 'AdminSLogoInverse32';
-          break;
+          return <Icon iconName={name} />
         }
         case NODE_TYPE.SITE:{
-          name = 'SquareShapeSolid';
-          break;
+          name = 'AdminSLogoInverse32';
+          return <Icon iconName={name} />
         }
         case NODE_TYPE.WEB:{
-          name = 'StatusCircleOuter';
-          break;
+          name = 'AdminSLogoInverse32';
+          return <Icon iconName={name} />
         }
         case NODE_TYPE.LIST:{
-          name = 'StatusTriangleOuter';
-          break;
+          return <img src={imageUrl} />
         }
         default: {
           break;
         }
       }
 
-      return name;
+      return <Icon iconName={name} />;
     }
 }
 

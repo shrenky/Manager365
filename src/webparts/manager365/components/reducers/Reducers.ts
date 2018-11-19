@@ -173,7 +173,7 @@ export default (state = {}, action) => {
             console.log(state);
             const nodePros = state[currentNodeId];
             const childIdsArr = nodePros.childIds;
-            const data = createNodesFromUrls(nodePros.type, urls);
+            const data = createNodesFromUrls(nodePros.type, urls, state[currentNodeId]);
             const newNodes = data.nodes;
             const ids = data.ids;
             console.log(data);
@@ -204,7 +204,7 @@ export default (state = {}, action) => {
     };
 };
 
-export function createNodesFromUrls(type, urls)
+export function createNodesFromUrls(type, urls, parentNode)
 {
     let nodeType = type;
     if(nodeType == NODE_TYPE.TENANT)
@@ -225,14 +225,15 @@ export function createNodesFromUrls(type, urls)
     urls.forEach(url=>{
         const id = treeCommons.getNextNodeId();
         idArr.push(id);
-        let urlorTitle = nodeType == NODE_TYPE.LIST ? url.title : url;
         nodes[id] = {
             id: id,
             type: nodeType,
+            imageUrl: url.imageUrl ? parentNode.url+url.imageUrl : '',
             counter: 0,
             isFulfilled:false,
             isRejected:false,
-            url: urlorTitle,
+            url: url.title ? url.title : url,
+            title: url.title,
             urls:[],
             childIds: []
         };

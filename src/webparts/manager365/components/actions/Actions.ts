@@ -49,16 +49,54 @@ export function select_node(nodeId): INodeAction {
     }
 }
 
-export function load_properties(type:NODE_TYPE, listTitle: string, nodeId) {
+export function load_properties(type:NODE_TYPE, nodeId, spHttpClient: any, urlOrTitle: string) {
     console.log('load_properties' + nodeId);
-    if(type == NODE_TYPE.LIST)
+    //const service = new SearchService(spHttpClient);
+    const listService = new ListService(spHttpClient);
+    if (type == NODE_TYPE.SITE)
     {
         return {
             type:LOAD_PROPERTIES,
-            payload: sp.web.lists.getByTitle(listTitle).get().then(listProps =>{
+            payload: listService.getSitePropsFromUrl(urlOrTitle).then((siteProps) => { 
+                console.log('get site Props: ' + siteProps);
+                return siteProps;
+            }),
+            meta: {
+                nodeId: nodeId
+            }
+        }
+    }
+    else if (type == NODE_TYPE.WEB)
+    {
+        return {
+            type:LOAD_PROPERTIES,
+            payload: listService.getWebPropsFromUrl(urlOrTitle).then((webProps) => { 
+                console.log('get web Props: ' + webProps);
+                return webProps;
+            }),
+            meta: {
+                nodeId: nodeId
+            }
+        }
+    }
+    else if (type == NODE_TYPE.LIST)
+    {
+        return {
+            type:LOAD_PROPERTIES,
+            payload: sp.web.lists.getByTitle(urlOrTitle).get().then(listProps =>{
                 console.log(listProps);
                 return listProps;
             }),
+            meta: {
+                nodeId: nodeId
+            }
+        }
+    }
+    else
+    {
+        return {
+            type:LOAD_PROPERTIES,
+            payload: undefined,
             meta: {
                 nodeId: nodeId
             }

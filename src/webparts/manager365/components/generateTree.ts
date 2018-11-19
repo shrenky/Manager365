@@ -12,11 +12,13 @@ export default function generateTree() {
       1: {
         id: 1,
         type: NODE_TYPE.TENANT,
+        imageUrl: '',
         counter: 0,
         isPending:false,
         isFulfilled:false,
         isRejected:false,
         url: serverUrl,
+        title:'',
         urls:[],
         childIds: [],
         unfold: false,

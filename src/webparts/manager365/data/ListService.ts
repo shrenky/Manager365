@@ -58,11 +58,12 @@ export class ListService {
 	public getListTitlesFromWeb(webUrl: string): Promise<IListTitle[]> {
 		return new Promise<IListTitle[]>((resolve,reject) => {
 			//let endpoint = Text.format("{0}/_api/web/lists?$select=Id,Title&$filter=(IsPrivate eq false) and (IsCatalog eq false) and (Hidden eq false)", webUrl);let endpoint = Text.format("{0}/_api/web/lists?$select=Id,Title&$filter=(IsPrivate eq false) and (IsCatalog eq false) and (Hidden eq false)", webUrl);
-			let endpoint = Text.format("{0}/_api/web/lists?$filter=(IsPrivate eq false) and (IsCatalog eq false) and (Hidden eq false)", webUrl);
+			let endpoint = Text.format("{0}/_api/web/lists?$select=Id,Title,ImageUrl&$filter=(IsPrivate eq false) and (IsCatalog eq false) and (Hidden eq false)", webUrl);
 			this.spHttpClient.get(endpoint, SPHttpClient.configurations.v1).then((response: SPHttpClientResponse) => {
 				if(response.ok) {
 					response.json().then((data: any) => {
-						let listTitles:IListTitle[] = data.value.map((list) => {console.log(list); return { id: list.Id, title: list.Title }; });
+						console.log('get list info: ' + data);
+						let listTitles:IListTitle[] = data.value.map((list) => {console.log(list); return { id: list.Id, title: list.Title, imageUrl: list.ImageUrl }; });
 						resolve(listTitles.sort((a,b) => { return Number(a.title > b.title); }));
 					})
 					.catch((error) => { reject(error); });
@@ -100,10 +101,69 @@ export class ListService {
         });
 	}
 
+	public getListPropsFromTitle(webUrl: string, listTitle: string) : Promise<any> {
+		return new Promise<IListTitle[]>((resolve,reject) => {
+			let endpoint = Text.format("{0}/_api/web/lists/GetByTitle({1})", webUrl, listTitle);
+			this.spHttpClient.get(endpoint, SPHttpClient.configurations.v1).then((response: SPHttpClientResponse) => {
+				if(response.ok) {
+					response.json().then((data: any) => {
+						console.log('get list props: ' + data);
+						resolve(data);
+					})
+					.catch((error) => { reject(error); });
+				}
+				else {
+					reject(response);
+				}
+			})
+			.catch((error) => { reject(error); }); 
+        });
+	}
+
+	public getWebPropsFromUrl(webUrl: string) : Promise<any> {
+		return new Promise<IListTitle[]>((resolve,reject) => {
+			//let endpoint = Text.format("{0}/_api/web/lists?$select=Id,Title&$filter=(IsPrivate eq false) and (IsCatalog eq false) and (Hidden eq false)", webUrl);let endpoint = Text.format("{0}/_api/web/lists?$select=Id,Title&$filter=(IsPrivate eq false) and (IsCatalog eq false) and (Hidden eq false)", webUrl);
+			let endpoint = Text.format("{0}/_api/web/", webUrl);
+			this.spHttpClient.get(endpoint, SPHttpClient.configurations.v1).then((response: SPHttpClientResponse) => {
+				if(response.ok) {
+					response.json().then((data: any) => {
+						console.log('get web props: ' + data);
+						resolve(data);
+					})
+					.catch((error) => { reject(error); });
+				}
+				else {
+					reject(response);
+				}
+			})
+			.catch((error) => { reject(error); }); 
+        });
+	}
+
+	public getSitePropsFromUrl(siteUrl: string) : Promise<any> {
+		return new Promise<IListTitle[]>((resolve,reject) => {
+			let endpoint = Text.format("{0}/_api/site/", siteUrl);
+			this.spHttpClient.get(endpoint, SPHttpClient.configurations.v1).then((response: SPHttpClientResponse) => {
+				if(response.ok) {
+					response.json().then((data: any) => {
+						console.log('get site props: ' + data);
+						resolve(data);
+					})
+					.catch((error) => { reject(error); });
+				}
+				else {
+					reject(response);
+				}
+			})
+			.catch((error) => { reject(error); }); 
+		});
+	}
+
 }
 
 
 export interface IListTitle {
 	id: string;
 	title: string;
+	imageUrl: string;
 }
