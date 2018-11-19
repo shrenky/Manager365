@@ -167,13 +167,13 @@ export default (state = {}, action) => {
 
     if(action.type == FETCH_DATA_FULFILLED){
         console.log('Fetch fulfilled 1: '+ action);
-        const urls = action.payload;
-        if(urls.length > 0)
+        const webOrListInfoList = action.payload;
+        if(webOrListInfoList.length > 0)
         {
             console.log(state);
             const nodePros = state[currentNodeId];
             const childIdsArr = nodePros.childIds;
-            const data = createNodesFromUrls(nodePros.type, urls, state[currentNodeId]);
+            const data = createNodesFromUrls(nodePros.type, webOrListInfoList, state[currentNodeId]);
             const newNodes = data.nodes;
             const ids = data.ids;
             console.log(data);
@@ -182,7 +182,7 @@ export default (state = {}, action) => {
                 isPending: false,
                 isFulfilled: true,
                 isRejected: false,
-                urls: action.payload,
+                //urls: action.payload,
                 childIds: [...childIdsArr, ...ids]
             };
             return {
@@ -204,7 +204,7 @@ export default (state = {}, action) => {
     };
 };
 
-export function createNodesFromUrls(type, urls, parentNode)
+export function createNodesFromUrls(type, infoList, parentNode)
 {
     let nodeType = type;
     if(nodeType == NODE_TYPE.TENANT)
@@ -222,18 +222,18 @@ export function createNodesFromUrls(type, urls, parentNode)
 
     let nodes = {};
     let idArr = [];
-    urls.forEach(url=>{
+    infoList.forEach(info=>{
         const id = treeCommons.getNextNodeId();
         idArr.push(id);
         nodes[id] = {
             id: id,
             type: nodeType,
-            imageUrl: url.imageUrl ? parentNode.url+url.imageUrl : '',
+            imageUrl: info.imageUrl ? parentNode.url+info.imageUrl : '',
             counter: 0,
             isFulfilled:false,
             isRejected:false,
-            url: url.title ? url.title : url,
-            title: url.title,
+            url: info.url ? info.url : info.title,
+            title: info.title,
             urls:[],
             childIds: []
         };

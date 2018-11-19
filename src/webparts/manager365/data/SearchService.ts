@@ -98,11 +98,11 @@ export class SearchService {
 	 * Recursively searches for all site collections with a path which starts by the specified url
 	 * @param startingUrl : The url of the domain from which to find the site collections
 	 **************************************************************************************************/
-	public getSitesStartingWith(startingUrl: string): Promise<string[]> {
+	public getSitesStartingWith(startingUrl: string): Promise<IWebBasicInfo[]> {
         console.log('in getSitesStartingWith');
         console.log(startingUrl);
-		return new Promise<string[]>((resolve,reject) => {
-			let queryProperties = Text.format("querytext='Path:{0}/* AND contentclass:STS_Site'&selectproperties='Path'&trimduplicates=false&rowLimit=500&Properties='EnableDynamicGroups:true'", startingUrl);
+		return new Promise<IWebBasicInfo[]>((resolve,reject) => {
+			let queryProperties = Text.format("querytext='Path:{0}/* AND contentclass:STS_Site'&selectproperties='Title,Path'&trimduplicates=false&rowLimit=500&Properties='EnableDynamicGroups:true'", startingUrl);
             console.log(queryProperties);
 			this.getSearchResultsRecursive(startingUrl, queryProperties)
 				.then((results: any) => {
@@ -120,9 +120,9 @@ export class SearchService {
 	 * Recursively searches for all site collections with a path which starts by the specified url
 	 * @param siteUrl : The url of the site collection from which to find the webs
 	 **************************************************************************************************/
-	public getWebsFromSite(siteUrl: string): Promise<string[]> {
-		return new Promise<string[]>((resolve,reject) => {
-			let queryProperties = Text.format("querytext='SPSiteUrl:{0} AND (contentclass:STS_Site OR contentclass:STS_Web)'&selectproperties='Path'&trimduplicates=false&rowLimit=500&Properties='EnableDynamicGroups:true'", siteUrl);
+	public getWebsFromSite(siteUrl: string): Promise<IWebBasicInfo[]> {
+		return new Promise<IWebBasicInfo[]>((resolve,reject) => {
+			let queryProperties = Text.format("querytext='SPSiteUrl:{0} AND (contentclass:STS_Site OR contentclass:STS_Web)'&selectproperties='Title,Path'&trimduplicates=false&rowLimit=500&Properties='EnableDynamicGroups:true'", siteUrl);
 
 			this.getSearchResultsRecursive(siteUrl, queryProperties)
 				.then((results: any) => {
@@ -158,9 +158,10 @@ export class SearchService {
 	 * Gets the paths out of the specified search results
 	 * @param results : The url of the domain from which to find the site collections
 	 **************************************************************************************************/
-	private getPathsFromResults(results: any): string[] {
-		let urls:string[] = [];
+	private getPathsFromResults(results: any): IWebBasicInfo[] {
+		let webBasicInfo:IWebBasicInfo[] = [];
 		let pathIndex = null;
+		let titleIndex = null
         console.log('in getPathsFromResults');
         console.log(results);
 		for(let result of  results.PrimaryQueryResult.RelevantResults.Table.Rows) {
@@ -169,9 +170,19 @@ export class SearchService {
 				let pathCell = result.Cells.filter((cell) => { return cell.Key == "Path"; })[0]; //get Site Collection's Path, UrlZone, Culture
 				pathIndex = result.Cells.indexOf(pathCell);
 			}
-			urls.push(result.Cells[pathIndex].Value.toLowerCase().trim());
-		}
-		return urls;
-	}
 
+			if(!titleIndex) {
+				let titleCell = result.Cells.filter((cell) => { return cell.Key == "Title"; })[0]; //get Site Collection's Title, UrlZone, Culture
+				titleIndex = result.Cells.indexOf(titleCell);
+			}
+
+			webBasicInfo.push({url: result.Cells[pathIndex].Value.toLowerCase().trim(), title:result.Cells[titleIndex].Value.toLowerCase().trim()});
+		}
+		return webBasicInfo;
+	}
+}
+
+export interface IWebBasicInfo {
+	url: string;
+	title: string;
 }

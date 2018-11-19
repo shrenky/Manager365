@@ -16,9 +16,9 @@ export const LOAD_PROPERTIES_PENDING = 'LOAD_PROPERTIES_PENDING';
 export const LOAD_PROPERTIES_FULFILLED = 'LOAD_PROPERTIES_FULFILLED';
 export const LOAD_PROPERTIES_REJECTED = 'LOAD_PROPERTIES_REJECTED';
 
-import { SearchService } from '../../data/SearchService';
+import { SearchService, IWebBasicInfo } from '../../data/SearchService';
 import treeCommons from '../../utility/treeCommons';
-import { ListService, IListTitle } from "../../data/ListService";
+import { ListService, IListBasicInfo } from "../../data/ListService";
 import {NODE_TYPE} from '../generateTree';
 import {
     sp
@@ -113,9 +113,9 @@ export function fetchData(type:NODE_TYPE, nodeId, spHttpClient: any, url: string
         console.log('get sites');
         return {
             type: FETCH_DATA,
-            payload: service.getSitesStartingWith(url).then((urls) => { 
-                console.log('get urls: ' + urls);
-                return urls;
+            payload: service.getSitesStartingWith(url).then((basicInfos) => { 
+                console.log('get urls: ' + basicInfos);
+                return basicInfos;
               }),
               meta: {
                 nodeId: nodeId
@@ -128,9 +128,9 @@ export function fetchData(type:NODE_TYPE, nodeId, spHttpClient: any, url: string
         console.log('get webs');
         return {
             type: FETCH_DATA,
-            payload: service.getWebsFromSite(url).then((urls) => { 
-                console.log('get web urls: ' + urls);
-                return urls;
+            payload: service.getWebsFromSite(url).then((basicInfos) => { 
+                console.log('get web urls: ' + basicInfos);
+                return basicInfos;
               }),
               meta: {
                 nodeId: nodeId
@@ -143,9 +143,9 @@ export function fetchData(type:NODE_TYPE, nodeId, spHttpClient: any, url: string
         const listService = new ListService(spHttpClient);
         return {
             type: FETCH_DATA,
-            payload: listService.getListTitlesFromWeb(url).then((titles) => { 
-                console.log('get list Titles: ' + titles);
-                return titles;
+            payload: listService.getListTitlesFromWeb(url).then((basicInfos) => { 
+                console.log('get list Titles: ' + basicInfos);
+                return basicInfos;
               }),
               meta: {
                 nodeId: nodeId

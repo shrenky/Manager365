@@ -54,7 +54,7 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
         <div>
           <Icon style={{cursor:'pointer'}} iconName={unfold ? 'CollapseContentSingle' : 'ExploreContentSingle'} onClick={this.handleLoadClick}/>{' '}
           { icon }{' '}
-          {<label className={isSelected ? Styles.Manager365SelectedNode : Styles.Manager365UnSelectedNode} onClick={this.onNodeSelected}>{url == '' ? title: url}</label>}
+          {<label className={isSelected ? Styles.Manager365SelectedNode : Styles.Manager365UnSelectedNode} onClick={this.onNodeSelected}>{title != '' ? title: url}</label>}
           <div className={unfold ? Styles.Manager365UnFold : Styles.Manager365Fold}>
             {
               this.props.isPending? <Spinner type={SpinnerType.normal} size={SpinnerSize.small}/> : 
