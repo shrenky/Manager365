@@ -22,7 +22,7 @@ import { ListService, IListTitle } from "../../data/ListService";
 import {NODE_TYPE} from '../generateTree';
 import {
     sp
-} from '@pnp/sp';
+} from '@pnp/sp'
 
 export interface INodeAction {
     type: string;

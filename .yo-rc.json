@@ -2,10 +2,11 @@
   "@microsoft/generator-sharepoint": {
     "isCreatingSolution": true,
     "environment": "spo",
-    "version": "1.5.1",
-    "libraryName": "manager-365",
-    "libraryId": "2ff1c6db-b7d5-4d67-b253-5fd3c4fec303",
+    "version": "1.7.0",
+    "libraryName": "m-365",
+    "libraryId": "8ceca9cf-b30e-4196-b464-fa24d20291fe",
     "packageManager": "npm",
+    "isDomainIsolated": false,
     "componentType": "webpart"
   }
 }
