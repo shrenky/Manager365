@@ -37,7 +37,6 @@ export function node(state, action: INodeAction) {
                 isFulfilled:false,
                 isRejected:false,
                 url: action.payload.url,
-                urls:[],
                 childIds: []
             };
         case INCREMENT:
@@ -63,7 +62,6 @@ export function node(state, action: INodeAction) {
                 isPending:true,
                 isFulfilled: false,
                 isRejected: false,
-                urls: action.payload,
                 childIds: []
             };
         case FETCH_DATA_FULFILLED:
@@ -72,7 +70,6 @@ export function node(state, action: INodeAction) {
                 isPending:false,
                 isFulfilled: true,
                 isRejected: false,
-                urls: action.payload,
                 childIds: []
             };
         case FETCH_DATA_REJECTED:
@@ -234,7 +231,6 @@ export function createNodesFromUrls(type, infoList, parentNode)
             isRejected:false,
             url: info.url ? info.url : info.title,
             title: info.title,
-            urls:[],
             childIds: []
         };
     });

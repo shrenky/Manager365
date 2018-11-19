@@ -11,7 +11,6 @@ export interface IPropertyFormProps{
     counter:any;
     childIds:any;
     url:string;
-    urls:string[];
     isPending:false;
     isFulfilled:false;
     isRejected:false;

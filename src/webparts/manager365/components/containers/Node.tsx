@@ -14,7 +14,6 @@ export interface INodeStateProps{
     client:any;
     url:string;
     title:string;
-    urls:string[];
     isPending:false;
     isFulfilled:false;
     isRejected:false;

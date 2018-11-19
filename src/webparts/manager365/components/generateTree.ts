@@ -19,7 +19,6 @@ export default function generateTree() {
         isRejected:false,
         url: serverUrl,
         title:'',
-        urls:[],
         childIds: [],
         unfold: false,
         isSelected: false,
