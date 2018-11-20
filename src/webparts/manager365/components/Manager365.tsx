@@ -33,10 +33,10 @@ export default class Manager365 extends React.Component<IManager365Props, IManag
     return (
         <Provider store={store}>
           <div>
-            <div>
+            <div className={Styles.Manager365Left}>
               <Node id={1} client={this.props.spHttpClient}/>
             </div>
-            <div >
+            <div className={Styles.Manager365Right}>
               <ConnectedForm id={0} client={this.props.spHttpClient}/>
             </div>
           </div>

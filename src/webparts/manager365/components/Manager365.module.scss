@@ -107,12 +107,14 @@
 }
 
 .Manager365Left {
-  display:table-cell;
-  width:30%;
+  width: 40%;
+  display: inline-flex;
+  overflow: auto;
 }
 
 
 .Manager365Right {
-  display:table-cell;
-  width:70%;
+  width: 60%;
+  display: inline-flex;
+  overflow: auto;
 }
