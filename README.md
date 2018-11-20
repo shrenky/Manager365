@@ -2,6 +2,10 @@
 
 Webpart built on SharePoint Framework to manage SharePoint online.
 
+Current version: 1.0
+features: 
+1. Explore SharePoint online tenant, site collections, sites, lists
+
 ### Building the code
 
 ```bash
