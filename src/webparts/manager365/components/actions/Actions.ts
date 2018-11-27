@@ -196,6 +196,20 @@ export function fetchData(type:NODE_TYPE, nodeId, spHttpClient: any, url: string
               }
         };
     }
+    else if(type == NODE_TYPE.VIEWCOLLECTION)
+    {
+        const listService = new ListService(spHttpClient);
+        return {
+            type: FETCH_DATA,
+            payload: listService.getListViews(parentUrl, url).then((basicInfos) => { 
+                console.log('get views Titles: ' + basicInfos);
+                return basicInfos;
+              }),
+              meta: {
+                nodeId: nodeId
+              }
+        };
+    }
     else {}
 }
 

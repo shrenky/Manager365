@@ -1,6 +1,6 @@
 import { Text }                                                 	from '@microsoft/sp-core-library';
 import { SPHttpClient, ISPHttpClientOptions, SPHttpClientResponse } from '@microsoft/sp-http';
-import { IListBasicInfo, IFieldBasicInfo } from './Common';
+import { IListBasicInfo, IFieldBasicInfo, IViewBasicInfo } from './Common';
 
 export class ListService {
 
@@ -96,6 +96,28 @@ export class ListService {
 						console.log('get fields info: ' + data);
 						let fieldsInfo:IFieldBasicInfo[] = data.value.map((list) => { return { id: list.Id, title: list.Title }; });
 						resolve(fieldsInfo.sort((a,b) => { return Number(a.title > b.title); }));
+					})
+					.catch((error) => { reject(error); });
+				}
+				else {
+					reject(response);
+				}
+			})
+			.catch((error) => { reject(error); }); 
+        });
+	}
+
+	public getListViews(webUrl: string, listTitle: string, selectProperties?: string[], orderBy?: string): Promise<any> {
+		return new Promise<any>((resolve,reject) => {
+			let selectProps = selectProperties ? selectProperties.join(',') : '';
+			let order = orderBy ? orderBy : 'InternalName';
+			let endpoint = Text.format("{0}/_api/web/lists/GetByTitle('{1}')/Views", webUrl, listTitle);
+			this.spHttpClient.get(endpoint, SPHttpClient.configurations.v1).then((response: SPHttpClientResponse) => {
+				if(response.ok) {
+					response.json().then((data: any) => {
+						console.log('get fields info: ' + data);
+						let viewsInfo:IViewBasicInfo[] = data.value.map((list) => { return { id: list.Id, title: list.Title }; });
+						resolve(viewsInfo.sort((a,b) => { return Number(a.title > b.title); }));
 					})
 					.catch((error) => { reject(error); });
 				}

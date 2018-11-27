@@ -262,6 +262,19 @@ export function createNodesFromUrls(type, infoList, parentNode)
                 title: 'Fields',
                 childIds: []
             };
+            const viewsNodeId = treeCommons.getNextNodeId();
+            nodes[viewsNodeId] = {
+                id: viewsNodeId,
+                type: NODE_TYPE.VIEWCOLLECTION,
+                imageUrl: parentNode.url+info.imageUrl,
+                counter: 0,
+                isFulfilled:false,
+                isRejected:false,
+                parentUrl:info.parentUrl,
+                url: info.title,
+                title: 'Views',
+                childIds: []
+            };
             const id = treeCommons.getNextNodeId();
             idArr.push(id);
             nodes[id] = {
@@ -273,7 +286,7 @@ export function createNodesFromUrls(type, infoList, parentNode)
                 isRejected:false,
                 url: info.title,
                 title: info.title,
-                childIds: [fieldsNodeId]
+                childIds: [fieldsNodeId, viewsNodeId]
             };
         });
     }
@@ -297,6 +310,27 @@ export function createNodesFromUrls(type, infoList, parentNode)
             };
         });
     }
+    else if(nodeType == NODE_TYPE.VIEWCOLLECTION)
+    {
+        nodeType = NODE_TYPE.VIEW;
+        infoList.forEach(info=>{
+            const id = treeCommons.getNextNodeId();
+            idArr.push(id);
+            nodes[id] = {
+                id: id,
+                type: nodeType,
+                imageUrl: '',
+                counter: 0,
+                isFulfilled:false,
+                isRejected:false,
+                parentUrl:'',
+                url: info.title,
+                title: info.title,
+                childIds: []
+            };
+        });
+    }
+    else {}
 
     
 

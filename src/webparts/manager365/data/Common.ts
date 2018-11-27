@@ -14,3 +14,8 @@ export interface IFieldBasicInfo {
 	id: string;
 	title: string;
 }
+
+export interface IViewBasicInfo {
+	id: string;
+	title: string;
+}
