@@ -8,7 +8,6 @@ import {
     FETCH_DATA_FULFILLED,
     FETCH_DATA_PENDING,
     FETCH_DATA_REJECTED,
-    FETCH_DATA,
     FOLD_UNFOLD,
     SELECT_NODE,
     LOAD_PROPERTIES_FULFILLED
@@ -203,37 +202,103 @@ export default (state = {}, action) => {
 
 export function createNodesFromUrls(type, infoList, parentNode)
 {
+    let nodes = {};
+    let idArr = [];
     let nodeType = type;
     if(nodeType == NODE_TYPE.TENANT)
     {
         nodeType = NODE_TYPE.SITE;
+        infoList.forEach(info=>{
+            const id = treeCommons.getNextNodeId();
+            idArr.push(id);
+            nodes[id] = {
+                id: id,
+                type: nodeType,
+                imageUrl: '',
+                counter: 0,
+                isFulfilled:false,
+                isRejected:false,
+                parentUrl: '',
+                url: info.url,
+                title: info.title,
+                childIds: []
+            };
+        });
     }
     else if(nodeType == NODE_TYPE.SITE)
     {
         nodeType = NODE_TYPE.WEB;
+        infoList.forEach(info=>{
+            const id = treeCommons.getNextNodeId();
+            idArr.push(id);
+            nodes[id] = {
+                id: id,
+                type: nodeType,
+                imageUrl: '',
+                counter: 0,
+                isFulfilled:false,
+                isRejected:false,
+                parentUrl:'',
+                url: info.url,
+                title: info.title,
+                childIds: []
+            };
+        });
     }
     else if(nodeType == NODE_TYPE.WEB)
     {
         nodeType = NODE_TYPE.LIST;
+        infoList.forEach(info=>{
+            const fieldsNodeId = treeCommons.getNextNodeId();
+            nodes[fieldsNodeId] = {
+                id: fieldsNodeId,
+                type: NODE_TYPE.FIELDCOLLECTION,
+                imageUrl: parentNode.url+info.imageUrl,
+                counter: 0,
+                isFulfilled:false,
+                isRejected:false,
+                parentUrl:info.parentUrl,
+                url: info.title,
+                title: 'Fields',
+                childIds: []
+            };
+            const id = treeCommons.getNextNodeId();
+            idArr.push(id);
+            nodes[id] = {
+                id: id,
+                type: nodeType,
+                imageUrl: parentNode.url+info.imageUrl,
+                counter: 0,
+                isFulfilled:false,
+                isRejected:false,
+                url: info.title,
+                title: info.title,
+                childIds: [fieldsNodeId]
+            };
+        });
+    }
+    else if(nodeType == NODE_TYPE.FIELDCOLLECTION)
+    {
+        nodeType = NODE_TYPE.FIELD;
+        infoList.forEach(info=>{
+            const id = treeCommons.getNextNodeId();
+            idArr.push(id);
+            nodes[id] = {
+                id: id,
+                type: nodeType,
+                imageUrl: '',
+                counter: 0,
+                isFulfilled:false,
+                isRejected:false,
+                parentUrl:'',
+                url: info.title,
+                title: info.title,
+                childIds: []
+            };
+        });
     }
 
-    let nodes = {};
-    let idArr = [];
-    infoList.forEach(info=>{
-        const id = treeCommons.getNextNodeId();
-        idArr.push(id);
-        nodes[id] = {
-            id: id,
-            type: nodeType,
-            imageUrl: info.imageUrl ? parentNode.url+info.imageUrl : '',
-            counter: 0,
-            isFulfilled:false,
-            isRejected:false,
-            url: info.url ? info.url : info.title,
-            title: info.title,
-            childIds: []
-        };
-    });
+    
 
     return {nodes:nodes, ids:idArr};
 }

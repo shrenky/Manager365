@@ -3,7 +3,12 @@ export enum NODE_TYPE
   TENANT,
   SITE,
   WEB,
-  LIST
+  LIST,
+  FIELD,
+  SUBWEBCOLLECTION,
+  VIEWCOLLECTION,
+  ITEMCOLLECTION,
+  FIELDCOLLECTION
 }
 
 export default function generateTree() {
@@ -17,6 +22,7 @@ export default function generateTree() {
         isPending:false,
         isFulfilled:false,
         isRejected:false,
+        parentUrl: '',
         url: serverUrl,
         title:'',
         childIds: [],

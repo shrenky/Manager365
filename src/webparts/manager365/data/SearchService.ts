@@ -1,5 +1,6 @@
 import { Text } 								from '@microsoft/sp-core-library';
 import { SPHttpClient, SPHttpClientResponse } 	from '@microsoft/sp-http';
+import { IWebBasicInfo } from './Common';
 
 export class SearchService {
 
@@ -182,7 +183,3 @@ export class SearchService {
 	}
 }
 
-export interface IWebBasicInfo {
-	url: string;
-	title: string;
-}

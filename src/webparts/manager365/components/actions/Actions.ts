@@ -16,13 +16,15 @@ export const LOAD_PROPERTIES_PENDING = 'LOAD_PROPERTIES_PENDING';
 export const LOAD_PROPERTIES_FULFILLED = 'LOAD_PROPERTIES_FULFILLED';
 export const LOAD_PROPERTIES_REJECTED = 'LOAD_PROPERTIES_REJECTED';
 
-import { SearchService, IWebBasicInfo } from '../../data/SearchService';
+import { SearchService} from '../../data/SearchService';
 import treeCommons from '../../utility/treeCommons';
-import { ListService, IListBasicInfo } from "../../data/ListService";
+import { ListService } from '../../data/ListService';
+import { IWebBasicInfo, IListBasicInfo } from '../../data/Common';
 import {NODE_TYPE} from '../generateTree';
 import {
     sp
 } from '@pnp/sp'
+import { WebService } from '../../data/WebService';
 
 export interface INodeAction {
     type: string;
@@ -92,6 +94,19 @@ export function load_properties(type:NODE_TYPE, nodeId, spHttpClient: any, urlOr
             }
         }
     }
+    else if (type == NODE_TYPE.FIELD)
+    {
+        /*return {
+            type:LOAD_PROPERTIES,
+            payload: sp.web.lists.getByTitle(urlOrTitle).get().then(listProps =>{
+                console.log(listProps);
+                return listProps;
+            }),
+            meta: {
+                nodeId: nodeId
+            }
+        }*/
+    }
     else
     {
         return {
@@ -105,7 +120,7 @@ export function load_properties(type:NODE_TYPE, nodeId, spHttpClient: any, urlOr
     
 }
 
-export function fetchData(type:NODE_TYPE, nodeId, spHttpClient: any, url: string){
+export function fetchData(type:NODE_TYPE, nodeId, spHttpClient: any, url: string, parentUrl: string, title, string){
     console.log('in fetch, httpClient: ' + spHttpClient);
     if(type == NODE_TYPE.TENANT)
     {
@@ -152,10 +167,36 @@ export function fetchData(type:NODE_TYPE, nodeId, spHttpClient: any, url: string
               }
         };
     }
-    else
+    else if(type == NODE_TYPE.LIST)
     {
-
+        console.log('get from: ' + url);
+        /*8const listService = new ListService(spHttpClient);
+        return {
+            type: FETCH_DATA,
+            payload: listService.getListFields(url, url).then((basicInfos) => { 
+                console.log('get fields Titles: ' + basicInfos);
+                return basicInfos;
+              }),
+              meta: {
+                nodeId: nodeId
+              }
+        };*/
     }
+    else if(type == NODE_TYPE.FIELDCOLLECTION)
+    {
+        const listService = new ListService(spHttpClient);
+        return {
+            type: FETCH_DATA,
+            payload: listService.getListFields(parentUrl, url).then((basicInfos) => { 
+                console.log('get fields Titles: ' + basicInfos);
+                return basicInfos;
+              }),
+              meta: {
+                nodeId: nodeId
+              }
+        };
+    }
+    else {}
 }
 
 export function increment(nodeId): INodeAction {

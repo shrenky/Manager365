@@ -14,6 +14,7 @@ export interface INodeStateProps{
     client:any;
     url:string;
     title:string;
+    parentUrl:string;
     isPending:false;
     isFulfilled:false;
     isRejected:false;
@@ -24,7 +25,7 @@ export interface INodeStateProps{
 export interface INodeDispatchProps{
     increment(id);
     createNode(payload);
-    fetchData(type, nodeId, client, url);
+    fetchData(type, nodeId, client, url, parentUrl, title);
     addChild(id, childId);
     fold_unfold(id);
     select_node(id);
@@ -72,10 +73,14 @@ export class Node extends React.Component<INodeStateProps & INodeDispatchProps> 
     }
 
     private handleLoadClick(){
-        const { fetchData, id, url, type, isPending, isFulfilled, isRejected, fold_unfold } = this.props;
+        const { fetchData, id, url, title, parentUrl, type, isPending, isFulfilled, isRejected, fold_unfold } = this.props;
         if(!(isPending || isFulfilled || isRejected))
         {
-          fetchData(type, id, this.props.client, url);
+          if(type != NODE_TYPE.LIST)
+          {
+            fetchData(type, id, this.props.client, url, parentUrl, title);
+          }
+          
         }
         
         fold_unfold(id);
