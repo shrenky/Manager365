@@ -163,13 +163,13 @@ export default (state = {}, action) => {
 
     if(action.type == FETCH_DATA_FULFILLED){
         console.log('Fetch fulfilled 1: '+ action);
-        const webOrListInfoList = action.payload;
-        if(webOrListInfoList.length > 0)
+        const children = action.payload;
+        if(children.length > 0)
         {
             console.log(state);
             const nodePros = state[currentNodeId];
             const childIdsArr = nodePros.childIds;
-            const data = createNodesFromUrls(nodePros.type, webOrListInfoList, state[currentNodeId]);
+            const data = createChildNodes(nodePros.type, children, state[currentNodeId]);
             const newNodes = data.nodes;
             const ids = data.ids;
             console.log(data);
@@ -178,7 +178,6 @@ export default (state = {}, action) => {
                 isPending: false,
                 isFulfilled: true,
                 isRejected: false,
-                //urls: action.payload,
                 childIds: [...childIdsArr, ...ids]
             };
             return {
@@ -200,7 +199,7 @@ export default (state = {}, action) => {
     };
 };
 
-export function createNodesFromUrls(type, infoList, parentNode)
+export function createChildNodes(type, children, parentNode)
 {
     let nodes = {};
     let idArr = [];
@@ -208,7 +207,7 @@ export function createNodesFromUrls(type, infoList, parentNode)
     if(nodeType == NODE_TYPE.TENANT)
     {
         nodeType = NODE_TYPE.SITE;
-        infoList.forEach(info=>{
+        children.forEach(child=>{
             const id = treeCommons.getNextNodeId();
             idArr.push(id);
             nodes[id] = {
@@ -219,8 +218,8 @@ export function createNodesFromUrls(type, infoList, parentNode)
                 isFulfilled:false,
                 isRejected:false,
                 parentUrl: '',
-                url: info.url,
-                title: info.title,
+                url: child.url,
+                title: child.title,
                 childIds: []
             };
         });
@@ -228,7 +227,7 @@ export function createNodesFromUrls(type, infoList, parentNode)
     else if(nodeType == NODE_TYPE.SITE)
     {
         nodeType = NODE_TYPE.WEB;
-        infoList.forEach(info=>{
+        children.forEach(child=>{
             const id = treeCommons.getNextNodeId();
             idArr.push(id);
             nodes[id] = {
@@ -239,8 +238,8 @@ export function createNodesFromUrls(type, infoList, parentNode)
                 isFulfilled:false,
                 isRejected:false,
                 parentUrl:'',
-                url: info.url,
-                title: info.title,
+                url: child.url,
+                title: child.title,
                 childIds: []
             };
         });
@@ -248,17 +247,17 @@ export function createNodesFromUrls(type, infoList, parentNode)
     else if(nodeType == NODE_TYPE.WEB)
     {
         nodeType = NODE_TYPE.LIST;
-        infoList.forEach(info=>{
+        children.forEach(child=>{
             const fieldsNodeId = treeCommons.getNextNodeId();
             nodes[fieldsNodeId] = {
                 id: fieldsNodeId,
                 type: NODE_TYPE.FIELDCOLLECTION,
-                imageUrl: parentNode.url+info.imageUrl,
+                imageUrl: parentNode.url+child.imageUrl,
                 counter: 0,
                 isFulfilled:false,
                 isRejected:false,
-                parentUrl:info.parentUrl,
-                url: info.title,
+                parentUrl:child.parentUrl,
+                url: child.title,
                 title: 'Fields',
                 childIds: []
             };
@@ -266,12 +265,12 @@ export function createNodesFromUrls(type, infoList, parentNode)
             nodes[viewsNodeId] = {
                 id: viewsNodeId,
                 type: NODE_TYPE.VIEWCOLLECTION,
-                imageUrl: parentNode.url+info.imageUrl,
+                imageUrl: parentNode.url+child.imageUrl,
                 counter: 0,
                 isFulfilled:false,
                 isRejected:false,
-                parentUrl:info.parentUrl,
-                url: info.title,
+                parentUrl:child.parentUrl,
+                url: child.title,
                 title: 'Views',
                 childIds: []
             };
@@ -280,12 +279,12 @@ export function createNodesFromUrls(type, infoList, parentNode)
             nodes[id] = {
                 id: id,
                 type: nodeType,
-                imageUrl: parentNode.url+info.imageUrl,
+                imageUrl: parentNode.url+child.imageUrl,
                 counter: 0,
                 isFulfilled:false,
                 isRejected:false,
-                url: info.title,
-                title: info.title,
+                url: child.title,
+                title: child.title,
                 childIds: [fieldsNodeId, viewsNodeId]
             };
         });
@@ -293,7 +292,7 @@ export function createNodesFromUrls(type, infoList, parentNode)
     else if(nodeType == NODE_TYPE.FIELDCOLLECTION)
     {
         nodeType = NODE_TYPE.FIELD;
-        infoList.forEach(info=>{
+        children.forEach(child=>{
             const id = treeCommons.getNextNodeId();
             idArr.push(id);
             nodes[id] = {
@@ -304,8 +303,8 @@ export function createNodesFromUrls(type, infoList, parentNode)
                 isFulfilled:false,
                 isRejected:false,
                 parentUrl:'',
-                url: info.title,
-                title: info.title,
+                url: child.title,
+                title: child.title,
                 childIds: []
             };
         });
@@ -313,7 +312,7 @@ export function createNodesFromUrls(type, infoList, parentNode)
     else if(nodeType == NODE_TYPE.VIEWCOLLECTION)
     {
         nodeType = NODE_TYPE.VIEW;
-        infoList.forEach(info=>{
+        children.forEach(child=>{
             const id = treeCommons.getNextNodeId();
             idArr.push(id);
             nodes[id] = {
@@ -324,8 +323,8 @@ export function createNodesFromUrls(type, infoList, parentNode)
                 isFulfilled:false,
                 isRejected:false,
                 parentUrl:'',
-                url: info.title,
-                title: info.title,
+                url: child.title,
+                title: child.title,
                 childIds: []
             };
         });

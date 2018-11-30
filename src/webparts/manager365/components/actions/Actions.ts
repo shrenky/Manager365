@@ -31,7 +31,6 @@ export interface INodeAction {
     nodeId?:any;
     childId?: any;
     counter?: number;
-    loadNode?: any;
     payload?: any;
 }
 
@@ -120,7 +119,7 @@ export function load_properties(type:NODE_TYPE, nodeId, spHttpClient: any, urlOr
     
 }
 
-export function fetchData(type:NODE_TYPE, nodeId, spHttpClient: any, url: string, parentUrl: string, title, string){
+export function fetchData(type:NODE_TYPE, nodeId, spHttpClient: any, url: string, parentUrl: string){
     console.log('in fetch, httpClient: ' + spHttpClient);
     if(type == NODE_TYPE.TENANT)
     {
