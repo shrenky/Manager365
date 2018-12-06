@@ -2,15 +2,14 @@
 
 Webpart built on SharePoint Framework to manage SharePoint online.
 
-Version 1.0 features (current version): 
-1.  Explore SharePoint online by different levels: tenant, site collection, site
-    Administrator is able to specify level in webpart configuration. --Todo
-    Administrator is able to configure specified sites to explore. --Todo
+Version 1.0 features (current version):<br/> 
+1. Explore SharePoint online by different levels: tenant, site collection, site <br/>
+   Administrator is able to specify level in webpart configuration. --Todo <br/>
+   Administrator is able to configure specified sites to explore. --Todo <br/>
 
-Version 2.0 features:
-2.  Manage site, list, items, fields, users --Todo
-3.  Log Administrator actions in specified list (support undo?) --Todo
-
+Version 2.0 features: <br/><br/>
+2.  Manage site, list, items, fields, users --Todo <br/>
+3.  Log Administrator actions in specified list (support undo?) --Todo <br/>
 
 
 ### Building the code
