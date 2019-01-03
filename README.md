@@ -10,6 +10,7 @@ Version 1.0 features (current version):<br/>
    User is able to view sites/lists/views/fields properties. --Todo <br/>
    Mock SharePoint data. --Todo <br/>
    Test by jest framework. --Todo <br/>
+   Office fabric UI. --Todo <br/>
    
 Version 2.0 features: <br/><br/>
 2.  Manage site, list, items, fields, users --Todo <br/>
